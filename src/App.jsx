@@ -8,6 +8,7 @@ import { Menu } from "./components/Menu";
 import { MotionConfig } from "framer-motion";
 import { Leva } from "leva";
 import { framerMotionConfig } from "./config";
+import { Cursor } from "./components/Cursor";
 
 function App() {
   const [section, setSection] = useState(0);
@@ -34,6 +35,7 @@ function App() {
           </ScrollControls>
         </Canvas>
         <Menu onSectionChange={setSection} menuOpened={menu} setMenuOpened={setMenuOpened} />
+        <Cursor />
       </MotionConfig>
       <Leva hidden />
     </>
