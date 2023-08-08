@@ -7,9 +7,9 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { animate, useMotionValue } from "framer-motion";
 import { motion } from "framer-motion-3d";
 import { useEffect } from "react";
+import { framerMotionConfig } from "../config";
 import { Avatar } from "./Avatar";
 import { Office } from "./Office";
-import { framerMotionConfig } from "../config";
 
 export const Experience = (props) => {
   const { section, menuOpened } = props;
@@ -35,7 +35,7 @@ export const Experience = (props) => {
   return (
     <>
       <ambientLight intensity={1} />
-      <motion.group 
+      <motion.group
         position={[1.5, 2, 3]}
         scale={[0.9, 0.9, 0.9]}
         rotation-y={-Math.PI / 4}
@@ -45,9 +45,9 @@ export const Experience = (props) => {
       >
         <Office section={section} />
       </motion.group>
-      
+
       {/* SKILLS */}
-      <motion.group 
+      <motion.group
         position={[0, -1.5, -10]}
         animate={{
           z: section === 1 ? 0 : -10,
@@ -94,7 +94,7 @@ export const Experience = (props) => {
         <group scale={[2, 2, 2]} position-y={-1.5}>
           <Avatar animation={section === 0 ? "Falling" : "Standing"} />
         </group>
-      </motion.group >
+      </motion.group>
     </>
   );
 };
