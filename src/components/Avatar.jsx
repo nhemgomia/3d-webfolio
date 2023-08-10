@@ -10,8 +10,8 @@ import { useControls } from "leva";
 import * as THREE from "three";
 
 export function Avatar(props) {
-  const { animation } = props;
-  const {headFollow, cursorFollow, wireframe} = useControls({
+  const { animation, wireframe } = props;
+  const {headFollow, cursorFollow} = useControls({
     headFollow: false,
     cursorFollow: false,
     wireframe: false,
@@ -120,4 +120,7 @@ export function Avatar(props) {
   )
 }
 
-useGLTF.preload('models/avatar.glb')
+useGLTF.preload('models/avatar.glb');
+useFBX.preload("animations/Typing.fbx");
+useFBX.preload("animations/Standing Idle.fbx");
+useFBX.preload("animations/Falling Idle.fbx");

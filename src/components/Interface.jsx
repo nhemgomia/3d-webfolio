@@ -1,15 +1,17 @@
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
+import { useForm, ValidationError } from '@formspree/react';
 import { currentProjectAtom, projects } from "./Projects";
 
 const Section = (props) => {
-  const { children } = props;
+  const { children, mobileTop } = props;
 
   return (
     <motion.section
       className={`
         h-screen w-screen p-8 max-w-screen-2xl 
-        mx-auto flex flex-col items-start justify-center
+        mx-auto flex flex-col items-start
+        ${mobileTop ? "justify-start md:justify-center" : "justify-center"}
       `}
       initial={{
         opacity: 0,
@@ -44,8 +46,12 @@ export const Interface = (props) => {
 const AboutSection = (props) => {
   const { setSection } = props;
   return (
-    <Section>
-      <h1 className="text-6xl font-extrabold leading-snug">
+    <Section mobileTop>
+      <h1 className={`
+          text-4xl leading-snug md:text-6xl md:leading-snug font-extrabold
+          mt-8 md:mt-0
+        `}
+        >
         Hi, I'm
         <br />
         <span className="bg-white px-1 italic">Nhem Gomia</span>
@@ -73,7 +79,7 @@ const AboutSection = (props) => {
         onClick={() => setSection(3) }
         className={`
           bg-indigo-600 text-white py-4 px-8 
-          rounded-lg font-bold text-lg mt-16
+          rounded-lg font-bold text-lg mt-4 md:mt-16
         `}
         initial={{
           opacity: 0,
@@ -131,13 +137,13 @@ const languages = [
 const SkillsSection = () => {
   return (
     <Section>
-      <motion.div whileInView={"visible"}>
-        <h2 className="text-5xl font-bold text-white">Skills</h2>
-        <div className=" mt-8 space-y-4">
+      <motion.div className="w-full" whileInView={"visible"}>
+        <h2 className="text-3xl md:text-5xl font-bold text-white">Skills</h2>
+        <div className="mt-8 space-y-4">
           {skills.map((skill, index) => (
-            <div className="w-64" key={index}>
+            <div className="w-full md:w-64" key={index}>
               <motion.h3
-                className="text-xl font-bold text-gray-100"
+                className="text-lg md:text-xl font-bold text-gray-100"
                 initial={{
                   opacity: 0,
                 }}
@@ -176,12 +182,12 @@ const SkillsSection = () => {
           ))}
         </div>
         <div>
-          <h2 className="text-5xl font-bold mt-10 text-white">Languages</h2>
-          <div className=" mt-8 space-y-4">
+          <h2 className="text-3xl md:text-5xl font-bold mt-10 text-white">Languages</h2>
+          <div className="mt-8 space-y-4">
             {languages.map((lng, index) => (
-              <div className="w-64" key={index}>
+              <div className="w-full md:w-64" key={index}>
               <motion.h3
-                className="text-xl font-bold text-gray-100"
+                className="text-lg md:text-xl font-bold text-gray-100"
                 initial={{
                   opacity: 0,
                 }}
@@ -245,7 +251,7 @@ const ProjectSection = () => {
         >
           ← Previous
         </button>
-        <h2 className="text-5xl font-bold">Projects</h2>
+        <h2 className="text-3xl md:text-5xl font-bold">Projects</h2>
         <button
           className="hover:text-indigo-600 transition-colors"
           onClick={nextProject}
@@ -258,67 +264,90 @@ const ProjectSection = () => {
 };
 
 const ContactSection = () => {
+  const [state, handleSubmit] = useForm("xwkdloke");
+
   return (
     <Section>
-      <h2 className="text-5xl font-bold">Contact me</h2>
-      <div className="mt-8 p-8 rounded-md bg-white w-96 max-w-full">
-        <form>
-          <label htmlFor="name" className="font-medium text-gray-900 block mb-1">
-            Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            className={`
-              block w-full rounded-md border-0 
-              text-gray-900 shadow-sm ring-1 ring-inset 
-              ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
-              focus:ring-indigo-600 p-3
-            `}
-          />
-          <label
-            htmlFor="email"
-            className="font-medium text-gray-900 block mb-1 mt-8"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className={`
-              block w-full rounded-md border-0 
-              text-gray-900 shadow-sm ring-1 ring-inset 
-              ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
-              focus:ring-indigo-600 p-3
-            `}
-          />
-          <label
-            htmlFor="email"
-            className="font-medium text-gray-900 block mb-1 mt-8"
-          >
-            Message
-          </label>
-          <textarea
-            name="message"
-            id="message"
-            className={`
-              h-32 block w-full rounded-md 
-              border-0 text-gray-900 shadow-sm ring-1 
-              ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-              focus:ring-inset focus:ring-indigo-600 p-3
-            `}
-          />
-          <button 
-            className={`
-            bg-indigo-600 text-white py-4 px-8 
-              rounded-lg font-bold text-lg mt-16
-            `}
-          >
-            Submit
-          </button>
-        </form>
+      <h2 className="text-3xl md:text-5xl font-bold">Contact me</h2>
+      <div className="mt-8 p-8 rounded-md bg-white bg-opacity-50 w-96 max-w-full">
+        {state.succeeded ? (
+          <p className="text-gray-900 text-center">Thanks for your message!</p>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="name" className="font-medium text-gray-900 block mb-1">
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              className={`
+                block w-full rounded-md border-0 
+                text-gray-900 shadow-sm ring-1 ring-inset 
+                ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+                focus:ring-indigo-600 p-3
+              `}
+            />
+            <ValidationError 
+              className="mt-1 text-red-500"
+              prefix="Name" 
+              field="name"
+              errors={state.errors}
+            />
+            <label
+              htmlFor="email"
+              className="font-medium text-gray-900 block mb-1 mt-8"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              className={`
+                block w-full rounded-md border-0 
+                text-gray-900 shadow-sm ring-1 ring-inset 
+                ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+                focus:ring-indigo-600 p-3
+              `}
+            />
+            <ValidationError 
+              className="mt-1 text-red-500"
+              prefix="Email" 
+              field="email"
+              errors={state.errors}
+            />
+            <label
+              htmlFor="email"
+              className="font-medium text-gray-900 block mb-1 mt-8"
+            >
+              Message
+            </label>
+            <textarea
+              name="message"
+              id="message"
+              className={`
+                h-32 block w-full rounded-md 
+                border-0 text-gray-900 shadow-sm ring-1 
+                ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
+                focus:ring-inset focus:ring-indigo-600 p-3
+              `}
+            />
+            <ValidationError 
+              className="mt-1 text-red-500"
+              errors={state.errors}
+            />
+            <button 
+              disabled={state.submitting}
+              className={`
+              bg-indigo-600 text-white py-4 px-8 
+                rounded-lg font-bold text-lg mt-16
+              `}
+            >
+              Submit
+            </button>
+          </form>
+        )}
       </div>
     </Section>
   );
